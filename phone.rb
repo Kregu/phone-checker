@@ -1,6 +1,7 @@
-require 'yaml'
+require 'yaml/store'
 
 file_with_know_phones = './phones.yml'
+@store = YAML::Store.new(file_with_know_phones)
 
 def load_file file_name
   begin
@@ -21,8 +22,11 @@ def add_new_phone_number
 		puts "Wrong number format!!!"
 	else
     @phones[new_phone] = new_phone_comments
-  	File.open("phones.yml", "w") do |file|
-  	  file.write @phones.to_yaml
+  	# File.open("phones.yml", "w") do |file|
+  	#   file.write @phones.to_yaml
+    # end
+    @store.transaction do
+        @store[new_phone] = new_phone_comments
     end
   end
 end
@@ -34,7 +38,8 @@ loop do
 	find_number = gets.chomp.downcase
 
 	if find_number == 'n'
-		add_new_phone_number
+        add_new_phone_number
+        redo
 	elsif find_number == 'q'
 		break
 	end
