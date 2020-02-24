@@ -32,9 +32,9 @@ def add_new_phone_number
   end
 end
 
-@phones = load_file file_with_know_phones
-
 loop do
+	@phones = load_file file_with_know_phones
+	
 	print ":"
 	find_number = gets.chomp.downcase
 
