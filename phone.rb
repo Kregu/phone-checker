@@ -1,4 +1,5 @@
 require 'yaml/store'
+require 'date'
 
 file_with_know_phones = './phones.yml'
 @store = YAML::Store.new(file_with_know_phones)
@@ -22,11 +23,11 @@ def add_new_phone_number
 		puts "Wrong number format!!!"
 	else
     @phones[new_phone] = new_phone_comments
-  	# File.open("phones.yml", "w") do |file|
-  	#   file.write @phones.to_yaml
-    # end
+
+	d = DateTime.now
+	
     @store.transaction do
-        @store[new_phone] = new_phone_comments
+        @store[new_phone] = [new_phone_comments, d.strftime("%d/%m/%Y %H:%M")]
     end
   end
 end
@@ -44,9 +45,9 @@ loop do
 		break
 	end
 
-	@phones.select do |phone, comment|
+	@phones.select do |phone, record|
 		if phone =~ /#{find_number}/i
-			puts "Ahtung!!! #{phone} #{comment}"
+			puts "Ahtung!!! #{phone} #{record[0]}, #{record[1]}"
 		end
 	end
 end
