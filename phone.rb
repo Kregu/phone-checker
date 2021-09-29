@@ -32,22 +32,30 @@ def add_new_phone_number
   end
 end
 
+def print_help
+	puts "n - add new phone number and comment\nq - quit"
+end
+
 loop do
 	@phones = load_file file_with_know_phones
 	
-	print ":"
+	print "help(h):"
 	find_number = gets.chomp.downcase
 
 	if find_number == 'n'
         add_new_phone_number
         redo
+  elsif find_number == 'h'
+    print_help
+    redo
 	elsif find_number == 'q'
 		break
-	end
+  end
+
 
 	@phones.select do |phone, record|
 		if phone =~ /#{find_number}/i
-			puts "Ahtung!!! #{phone} #{record[0]}, #{record[1]}"
+			puts "Warning! #{phone} #{record[0]}, #{record[1]}"
 		end
 	end
 end
